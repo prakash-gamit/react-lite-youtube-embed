@@ -3,9 +3,19 @@ import PropTypes from "prop-types";
 
 import "./LiteYouTubeEmbed.css";
 
-const LiteYouTubeEmbed = ({ adNetwork, id, playlist, poster, title, noCookie, activatedClass, iframeClass, playerClass, wrapperClass
+const LiteYouTubeEmbed = ({
+  adNetwork,
+  id,
+  playlist,
+  poster,
+  title,
+  noCookie,
+  activatedClass,
+  iframeClass,
+  playerClass,
+  wrapperClass,
+  params,
 }) => {
-
   const [preconnected, setPreconnected] = useState(false);
   const [iframe, setIframe] = useState(false);
   const videoId = encodeURIComponent(id);
@@ -15,8 +25,8 @@ const LiteYouTubeEmbed = ({ adNetwork, id, playlist, poster, title, noCookie, ac
     ? "https://www.youtube-nocookie.com"
     : "https://www.youtube.com";
   const iframeSrc = !playlist
-    ? `${ytUrl}/embed/${videoId}?autoplay=1`
-    : `${ytUrl}/embed/videoseries?list=${videoId}`;
+    ? `${ytUrl}/embed/${videoId}?autoplay=1${params ? `&${params}` : ""}`
+    : `${ytUrl}/embed/videoseries?list=${videoId}${params ? `&${params}` : ""}`;
 
   const warmConnections = () => {
     if (preconnected) return;
@@ -32,19 +42,21 @@ const LiteYouTubeEmbed = ({ adNetwork, id, playlist, poster, title, noCookie, ac
     <Fragment>
       <link rel="preload" href={posterUrl} as="image" />
       <>
-      {preconnected && (
-        <>
-          <link rel="preconnect" href={ytUrl} />
-          <link rel="preconnect" href="https://www.google.com" />
-          {adNetwork && (
-            <>
-            <link rel="preconnect" href="https://static.doubleclick.net" />
-            <link rel="preconnect" href="https://googleads.g.doubleclick.net" />
-            </>
-            ) 
-          }
-        </>
-      )}
+        {preconnected && (
+          <>
+            <link rel="preconnect" href={ytUrl} />
+            <link rel="preconnect" href="https://www.google.com" />
+            {adNetwork && (
+              <>
+                <link rel="preconnect" href="https://static.doubleclick.net" />
+                <link
+                  rel="preconnect"
+                  href="https://googleads.g.doubleclick.net"
+                />
+              </>
+            )}
+          </>
+        )}
       </>
       <div
         onPointerOver={warmConnections}
@@ -81,7 +93,8 @@ LiteYouTubeEmbed.propTypes = {
   activatedClass: PropTypes.string,
   iframeClass: PropTypes.string,
   playerClass: PropTypes.string,
-  wrapperClass: PropTypes.string
+  wrapperClass: PropTypes.string,
+  params: PropTypes.string,
 };
 
 LiteYouTubeEmbed.defaultProps = {
@@ -95,6 +108,7 @@ LiteYouTubeEmbed.defaultProps = {
   iframeClass: "",
   playerClass: "lty-playbtn",
   wrapperClass: "yt-lite",
+  params: "",
 };
 
 export default LiteYouTubeEmbed;

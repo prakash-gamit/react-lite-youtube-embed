@@ -12,7 +12,8 @@ var LiteYouTubeEmbed = function LiteYouTubeEmbed(_ref) {
       activatedClass = _ref.activatedClass,
       iframeClass = _ref.iframeClass,
       playerClass = _ref.playerClass,
-      wrapperClass = _ref.wrapperClass;
+      wrapperClass = _ref.wrapperClass,
+      params = _ref.params;
 
   var _useState = useState(false),
       _useState2 = _slicedToArray(_useState, 2),
@@ -28,7 +29,7 @@ var LiteYouTubeEmbed = function LiteYouTubeEmbed(_ref) {
   var videoTitle = title;
   var posterUrl = "https://i.ytimg.com/vi/".concat(videoId, "/").concat(poster, ".jpg");
   var ytUrl = noCookie ? "https://www.youtube-nocookie.com" : "https://www.youtube.com";
-  var iframeSrc = !playlist ? "".concat(ytUrl, "/embed/").concat(videoId, "?autoplay=1") : "".concat(ytUrl, "/embed/videoseries?list=").concat(videoId);
+  var iframeSrc = !playlist ? "".concat(ytUrl, "/embed/").concat(videoId, "?autoplay=1").concat(params ? "&".concat(params) : "") : "".concat(ytUrl, "/embed/videoseries?list=").concat(videoId).concat(params ? "&".concat(params) : "");
 
   var warmConnections = function warmConnections() {
     if (preconnected) return;
@@ -88,6 +89,7 @@ LiteYouTubeEmbed.defaultProps = {
   activatedClass: "lyt-activated",
   iframeClass: "",
   playerClass: "lty-playbtn",
-  wrapperClass: "yt-lite"
+  wrapperClass: "yt-lite",
+  params: ""
 };
 export default LiteYouTubeEmbed;
